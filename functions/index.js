@@ -24,26 +24,42 @@ exports.sayHello = functions.https.onCall((data,context) =>{
 exports.newUserSignUp = functions.auth.user().onCreate(async(user) =>{
     console.log('From Auth Trigger New User Create');
     console.log(user.email,user.uid);
-    try{
-        await admin.firestore().collection('users').doc(user.uid).set({
-            email:user.email,
-            password:user.password
-        });
-        return 'onCreate Auth Trigger success!';
-    }catch(err){
-        return err.message;
-    }
+    return 'new user sign up done!';
+    // try{
+    //     await admin.firestore().collection('users').doc(user.uid).set({
+    //         email:user.email,
+    //         password:user.password
+    //     });
+    //     return 'onCreate Auth Trigger success!';
+    // }catch(err){
+    //     return err.message;
+    // }
     
 });
 
 exports.UserDelete = functions.auth.user().onDelete(async(user) =>{
     console.log('From Auth Trigger');
     console.log(user.email,user.uid);
-    try{
-        await admin.firestore().collection('users').doc(user.uid).delete();
-        return 'onDelete Auth Trigger success!';
-    }catch(err){
-        return err.message;
-    }
+    return 'user has been deleted';
+    // try{
+    //     await admin.firestore().collection('users').doc(user.uid).delete();
+    //     return 'onDelete Auth Trigger success!';
+    // }catch(err){
+    //     return err.message;
+    // }
 });
+
+exports.addNewBook = functions.https.onCall(async (data,context) =>{
+    // if(!context.auth){
+    //     throw new functions.https.HttpsError('unauthenticated','Only Authenticated users are allowed');
+    // }
+    const {bookName,bookAuthor} = data;
+    try{
+        await admin.firestore().collection('books').add({bookName,bookAuthor});
+        return 'New Book Added';
+    }catch(err){
+        return err;
+    }
+    
+})
 

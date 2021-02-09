@@ -8,3 +8,16 @@ document.querySelector('#sayHello').addEventListener('click',async (e) =>{
         console.log(err);
     }
 })
+
+document.querySelector('#addNewBook').addEventListener('click',async (e) =>{
+    const addNewBook = functions.httpsCallable('addNewBook');
+    try{
+        const res = await addNewBook({
+            bookName: 'An Introduction to Mechanics',
+            bookAuthor: "Daniel Kleppner"
+        });
+        console.log(res);
+    }catch(err){
+        console.log(err);
+    }
+})
