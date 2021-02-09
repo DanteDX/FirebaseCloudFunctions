@@ -8,3 +8,10 @@ exports.getRandomNumber = functions.https.onRequest((req,res) =>{
 exports.goToGoogle = functions.https.onRequest((req,res) =>{
     res.redirect('https://www.google.com');
 });
+
+exports.sayHello = functions.https.onCall((data,context) =>{
+    if(!data.userName){
+        return 'Please Provide a userName';
+    }
+    return `${data.userName} said hello to you`;
+});
