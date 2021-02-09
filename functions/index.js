@@ -63,3 +63,18 @@ exports.addNewBook = functions.https.onCall(async (data,context) =>{
     
 })
 
+//Firestore trigger
+exports.logActivities = functions.firestore.document('/{collection}/{id}')
+	.onCreate((snap,context) =>{
+		console.log(snap.data()); // of a single doc
+		const collection = context.params.collection;
+        const id = context.params.id; 	
+        console.log(collection,id);
+		const activities = admin.firestore().collection('samples');	
+		if(collection === 'books'){
+			return activities.add({text:'a new tut req'});
+		}else{
+            return 0;
+        }					
+	})
+
