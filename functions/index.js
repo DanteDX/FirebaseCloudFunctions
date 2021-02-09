@@ -1,9 +1,10 @@
 const functions = require('firebase-functions');
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.getRandomNumber = functions.https.onRequest((req,res) =>{
+    let myRandom = Math.round(Math.random() * 100);
+    res.send(myRandom.toString());
+});
+
+exports.goToGoogle = functions.https.onRequest((req,res) =>{
+    res.redirect('https://www.google.com');
+});
