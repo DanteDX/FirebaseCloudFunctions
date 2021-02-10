@@ -37,6 +37,7 @@ exports.newUserSignUp = functions.auth.user().onCreate(async(user) =>{
     
 });
 
+// Auth Trigger
 exports.UserDelete = functions.auth.user().onDelete(async(user) =>{
     console.log('From Auth Trigger');
     console.log(user.email,user.uid);
@@ -76,5 +77,15 @@ exports.logActivities = functions.firestore.document('/{collection}/{id}')
 		}else{
             return 0;
         }					
-	})
+    });
+    
+//cloud storage trigger
+exports.StorageTrigger = functions.storage.object().onFinalize(obj =>{
+    const fileBucket = obj.bucket; // storage bucket that contains the file
+    const filePath = obj.name; // file path in the bucket
+    const contentType = obj.contentType; // file content type
+    console.log({fileBucket,filePath,contentType});
+    admin.firestore().collection('uploads').add({fileBucket,filePath,contentType});
+    console.log('StorageTrigger Executed');
+});
 
